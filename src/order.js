@@ -4,14 +4,21 @@ const { validateCPF } = require('./cpf');
 exports.createOrder = function (userCpf, orderData, discountCoupon) {
     const { isValid, errorMessages } = validateParams(userCpf, orderData, discountCoupon)
     if (!isValid) {
-        errorMessages.forEach(errorMessage => console.log(errorMessage));
-        return false;
+        return {
+            isValid: false,
+            errorMessages 
+        };
     }
 
     const orderSummary = getOrderSummary(userCpf, orderData, discountCoupon);
-    showSuccessMessage(orderSummary);
+    successMessage = getSuccessMessage(orderSummary);
 
-    return orderSummary.priceWithDiscount;
+    return {
+        isValid: true,
+        price: orderSummary.priceWithDiscount,
+        successMessage,
+        errorMessages
+    }
 }
 
 const validateParams = function (userCpf, orderData, discountCoupon) {
@@ -74,11 +81,13 @@ const calculatePriceWithDiscount = function (totalPrice, discountCoupon) {
     return discountValue = totalPrice - (totalPrice * discountCoupon);
 }
 
-const showSuccessMessage = function (orderSummary) {
-    console.log('Pedido criado com sucesso!');
-    console.log('Dados do pedido:');    
-    console.log(`Quantidade de items: ${orderSummary.itemsQuantity}`);
-    console.log(`Valor total: R$ ${orderSummary.totalPrice}`);
-    console.log(`Desconto de ${100 * orderSummary.Discount}% aplicado`);
-    console.log(`Valor com desconto: R$ ${orderSummary.priceWithDiscount}`);
+const getSuccessMessage = function (orderSummary) {
+    return `
+        Pedido criado com sucesso!
+        Dados do pedido:
+        Quantidade de items: ${orderSummary.itemsQuantity}
+        alor total: R$ ${orderSummary.totalPrice}
+        Desconto de ${100 * orderSummary.Discount}% aplicado
+        Valor com desconto: R$ ${orderSummary.priceWithDiscount}
+    `;
 }

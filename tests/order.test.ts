@@ -2,8 +2,8 @@ const { createOrder } = require('../src/order');
 
 test("Should return false if the invalid CPF's is provided", () => {
     const invalidCpf = '123.123.123-12';
-    const  isValid = createOrder(invalidCpf, [], '');
-    expect(isValid).toBe(false);
+    const  result = createOrder(invalidCpf, [], '');
+    expect(result.isValid).toBe(false);
 });
 
 test("Should return false if orderData is invalid", () => {
@@ -17,8 +17,8 @@ test("Should return false if orderData is invalid", () => {
         }
     ];
 
-    const  isValid = createOrder(validCpf, invalidOrderData);
-    expect(isValid).toBe(false);
+    const  result = createOrder(validCpf, invalidOrderData);
+    expect(result.isValid).toBe(false);
 });
 
 test("Should return the price with discount if everything is ok.", () => {
@@ -33,8 +33,8 @@ test("Should return the price with discount if everything is ok.", () => {
     ];
     const validDiscoutCoupon = '0.10';
 
-    const  isValid = createOrder(validCpf, validOrderData, validDiscoutCoupon);
-    expect(isValid).toBe(2700);
+    const  result = createOrder(validCpf, validOrderData, validDiscoutCoupon);
+    expect(result.price).toBe(2700);
 });
 
 test("Should return the price with discount if everything is ok with a order with more than one item.", () => {
@@ -61,6 +61,6 @@ test("Should return the price with discount if everything is ok with a order wit
     ];
     const validDiscoutCoupon = '0.10';
 
-    const  isValid = createOrder(validCpf, validOrderData, validDiscoutCoupon);
-    expect(isValid).toBe(2700);
+    const  result = createOrder(validCpf, validOrderData, validDiscoutCoupon);
+    expect(result.price).toBe(2700);
 });
