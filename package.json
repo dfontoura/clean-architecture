@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "node ./src/cpf.js",
-    "run": "node ./src/teste.js",
+    "start": "node ./src/main.js",
     "build": "tsc",
-    "test":  "jest src/",
+    "test": "jest tests/",
     "coverage": "jest --coverage",
     "tsc:init": "tsc --init"
   },
