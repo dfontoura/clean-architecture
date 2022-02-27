@@ -1,4 +1,4 @@
-const validateCPF = require('./cpf');
+const validateCPF = require('../src/cpf');
 
 test("Should return false if the CPF's is undefined (not provided)", () => {
     const  isValid = validateCPF.validateCPF();
