@@ -1,0 +1,31 @@
+{
+  "name": "e-commerce",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node ./src/cpf.js",
+    "run": "node ./src/teste.js",
+    "build": "tsc",
+    "test":  "jest src/",
+    "coverage": "jest --coverage",
+    "tsc:init": "tsc --init"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dfontoura/e-commerce.git"
+  },
+  "author": "Daniel Fontoura",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dfontoura/e-commerce/issues"
+  },
+  "homepage": "https://github.com/dfontoura/e-commerce#readme",
+  "dependencies": {
+    "typescript": "^4.5.5"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.4.0",
+    "jest": "^27.5.1"
+  }
+}
