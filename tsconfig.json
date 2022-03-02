@@ -8,8 +8,10 @@
   "esModuleInterop": true
   },
   "include": [
-      "./src"
-, "tests", "data/data.js"  ],
+      "src", 
+      "tests", 
+      "data/data.js"  
+  ],
   "exclude": [
       "./node_modules"
   ]
