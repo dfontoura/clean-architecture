@@ -7,21 +7,28 @@ export default class Cpf {
     private value: string;
 
     constructor(value: string) {
-        const isValid = this.validate(value);
+        if (!value) {
+            throw new Error('CPF is required');
+        }
+        const  sanitedValue = this.sanitize(value);
+        const isValid = this.validate(sanitedValue);
         if (!isValid) {
             throw new Error("Invalid CPF");
         }
-        this. value = value;
+
+        this.value = sanitedValue;
     }
 
-    getValue () {
+    public getValue () {
         return this.value;
     }
 
-    private validate(cpf: string) {
-        if (!cpf) return false;
-        const formattedCPF = this.formatCPF(cpf);
+    private sanitize (cpf:string) {
+        return cpf.replace(/[^\d]+/g, '')
+    }
 
+    private validate (cpf: string) {
+        const formattedCPF = this.formatCPF(cpf);
         const isInvalid = this.isInvalidString(formattedCPF);
         if (isInvalid) return false;
 
@@ -35,7 +42,6 @@ export default class Cpf {
     
     private formatCPF (cpf: string) {
         return cpf
-            .replace(/[^\d]+/g, '')
             .split("")
             .map((digit) => parseInt(digit));
     }
