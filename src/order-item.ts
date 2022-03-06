@@ -12,4 +12,8 @@ export default class OrderItem {
     public getTotal (): number {
         return this.quantity * this.item.getPrice();
     }
+
+    public getShipping(distance: number): number {
+        return this.item.getShipping(distance) * this.quantity;
+    }
 }
