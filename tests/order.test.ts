@@ -1,37 +1,100 @@
 import Coupon from '../src/coupon';
-import Item from '../src/item';
+import Item, { ItemParameters } from '../src/item';
 import Order from '../src/order'
 
-test('Should create a order and return the amount "0"', () => {
-    const newOrder = new Order('123.456.789-09');
-    expect(newOrder.getTotal()).toBe(0);
-})
+const addItems = (order: Order): void => {
+    const orderItems = getOrderItems();
+    orderItems.forEach(param => {
+        order.addItem(param.item, param.quantity);
+    });
+}
 
-test('should create an order with 3 items', () => {
-    const newOrder = new Order('123.456.789-09');
-    newOrder.addItem(new Item(1, 'Musical Instruments', 'Guitar', 300), 1);
-    newOrder.addItem(new Item(2, 'Musical Instruments', 'Amplifier', 150), 2);
-    newOrder.addItem(new Item(3, 'Accesssories', 'Cable', 100), 3);
-    expect(newOrder.getTotal()).toBe(900);
-})
+const getOrderItems = (): any[] => {
+    return [
+        {
+            item: new Item({
+                id: 1,
+                category: 'Musical Instruments',
+                description: 'Guitar',
+                price: 300,
+                height: 10,
+                width: 30,
+                depth: 100,
+                weight: 3
+            }),
+            quantity: 1
+        },
+        {
+            item: new Item({
+                id: 2,
+                category: 'Musical Instruments',
+                description: 'Amplifier',
+                price: 150,
+                height: 50,
+                width: 50,
+                depth: 50,
+                weight: 8
+            }),
+            quantity: 2
+        },
+        {
+            item: new Item({
+                id: 3,
+                category: 'Accessories',
+                description: 'Cable',
+                price: 100,
+                height: 5,
+                width: 20,
+                depth: 20,
+                weight: 0.5
+            }),
+            quantity: 3
+        }
+    ];
+}
 
-test('Should return the price with discount if a coupon is informed.', () => {
-    const newOrder = new Order('123.456.789-09');
-    newOrder.addItem(new Item(1, 'Musical Instruments', 'Guitar', 300), 1);
-    newOrder.addItem(new Item(2, 'Musical Instruments', 'Amplifier', 150), 2);
-    newOrder.addItem(new Item(3, 'Accesssories', 'Cable', 100), 3);
-    const coupon = new Coupon('DESC20', 20);
-    newOrder.addCoupon(coupon);   
+describe('Happy paths:', () => {
+    test('Empty order: should create a order and return the total price "0"', () => {
+        const newOrder = new Order('123.456.789-09');
+        expect(newOrder.getTotal()).toBe(0);
+    });
 
-    expect(newOrder.getTotal()).toBe(720);
+    test('Order with 3 items: should create the order and return the total price', () => {
+        const newOrder = new Order('123.456.789-09');
+        addItems(newOrder);
+        expect(newOrder.getTotal()).toBe(900);
+    });
+
+    test('Valid coupon: should return the price with discount', () => {
+        const newOrder = new Order('123.456.789-09');
+        addItems(newOrder);
+        const coupon = new Coupon('DESC20', 20, new Date('9999-12-31'));
+        newOrder.addCoupon(coupon);   
+        expect(newOrder.getTotal()).toBe(720);
+    });
+
+    test('Shipping: should return the shipping price', () => {
+        const newOrder = new Order('123.456.789-09');
+        addItems(newOrder);
+        expect(newOrder.getShipping(1000)).toBe(220);
+    })
 });
 
-test('Should throw error "invalid CPF" if invalid CPF is provided', () => {
-    expect(() => new Order('123.123.123-12')).toThrowError('Invalid CPF');
-});
+describe('Exception paths:', () => {
+    test('Invalid CPF: should throw error "invalid CPF"', () => {
+        expect(() => new Order('123.123.123-12')).toThrowError('Invalid CPF');
+    });
 
-test('Should throw error "Invalid parameter" quantity is invalid', () => {
-    const newOrder = new Order('123.456.789-09');
-    const newItem = new Item(1, 'Musical Instruments', 'Guitar', 100);
-    expect(() => newOrder.addItem(newItem, -10)).toThrowError('Invalid parameter');
+    test('Invalid quantity: should throw error "Invalid parameter"', () => {
+        const newOrder = new Order('123.456.789-09');
+        const newItem = getOrderItems()[0].item;
+        expect(() => newOrder.addItem(newItem, -10)).toThrowError('Invalid parameter');
+    });
+
+    test('Expired coupon: should throw error "Invalid parameter"', () => {
+        const newOrder = new Order('123.456.789-09');
+        addItems(newOrder);
+        const coupon = new Coupon('DESC20', 20, new Date('2022-03-01'))
+        expect(() => newOrder.addCoupon(coupon)).toThrowError('Invalid parameter');
+    });
 });

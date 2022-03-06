@@ -29,6 +29,15 @@ export default class Order {
     }
 
     public addCoupon(coupon: Coupon) {
+        if (!coupon || !coupon.isValid()) {
+            throw new Error('Invalid parameter');
+        }
         this.coupon = coupon;
+    }
+
+    public getShipping(distance: number): number {
+        return this.orderItems.reduce((total, orderItem) => {
+            return total + orderItem.getShipping(distance);
+        }, 0);
     }
 }
