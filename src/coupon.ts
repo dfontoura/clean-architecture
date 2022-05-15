@@ -1,26 +1,21 @@
 export default class Coupon {
-    private name: string;
-    private percentage: number;
-    private expirationDate: Date;
-
-    constructor(name: string, percentage: number, expirationDate: Date) {
-        if(!name || !percentage || percentage < 0 || percentage > 100 || !expirationDate) {
+    constructor(readonly name: string, readonly percentage: number, readonly expirationDate?: Date) {
+        if(!name || !percentage || percentage < 0 || percentage > 100) {
             throw new Error('Invalid parameters');
         }
-
-        this.name = name;
-        this.percentage = percentage;
-        this.expirationDate = expirationDate;
     }
 
     public getDiscount(total: number):  number  {
+        if (this.isExpired()) {
+            return 0;
+        };
         return total * (this.percentage / 100);
     }
 
-    public isValid(): boolean {
-        if (this.expirationDate < new Date()) {
+    public isExpired(today: Date = new Date()): boolean {
+        if  (!this.expirationDate) {
             return false;
         }
-        return true;
+        return this.expirationDate.getTime() < today.getTime()
     }
 }
