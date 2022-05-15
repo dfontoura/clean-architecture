@@ -1,35 +1,19 @@
-import Item from "../src/item";
+import Item from '../src/item';
+import { ITEM_DATA } from './mock/item-data';
+
+const { guitar, cable } = ITEM_DATA;
 
 describe('Happy paths:', () => {
-    test('Shipping price greater than minimum: should return the calculated shipping price',  () => {
-        const item = new Item({
-            id: 1,
-            category: 'Musical Instruments',
-            description: 'Guitar',
-            price: 300,
-            height: 10,
-            width: 30,
-            depth: 100,
-            weight: 3
-        });
-
-        const distance = 1000;
-        expect(item.getShipping(distance)).toBe(30);
+    test('Should create an item with dimensions and calculate volume', () => {
+        const item = new Item(guitar);
+        const itemVolume = item.getVolume('m');        
+        expect(itemVolume).toBe(0.10 * 0.30 * 1.00);
     });
 
-    test('Shipping cost less than minimum: should return the minimum shipping price',  () => {
-        const item = new Item({
-            id: 1,
-            category: 'Accessories',
-            description: 'cable',
-            price: 100,
-            height: 5,
-            width: 20,
-            depth: 20,
-            weight: 0.5
-        });
-
-        const distance = 1000;
-        expect(item.getShipping(distance)).toBe(10);
-    });
+    test('Should create an item with dimensions and calculate density', () => {
+        const item = new Item(guitar);
+        const itemVolume = item.getVolume('m');
+        const itemDensity = item.getWeight() / itemVolume;
+        expect(itemDensity).toBe(3 / (0.10 * 0.30 * 1.00));
+    })
 });

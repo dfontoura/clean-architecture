@@ -1,13 +1,11 @@
-const MINIMUM_SHIPPING_PRICE = 10;
+import Dimension from "./dimension";
 
 export default class Item {
     private id: number;
     private category: string;
     private description: string;
     private price: number;
-    private height: number;
-    private width: number;
-    private depth: number;
+    private dimensions: Dimension | undefined;
     private weight: number;
 
     constructor(params: ItemParameters) {
@@ -20,9 +18,7 @@ export default class Item {
         this.category = params.category;
         this.description = params.description;
         this.price = params.price;
-        this.height = params.height;
-        this.width = params.width;
-        this.depth = params.depth;
+        this.dimensions = params.dimensions;
         this.weight = params.weight;
     }
 
@@ -32,9 +28,7 @@ export default class Item {
             !!params.category && 
             !!params.description && 
             !!params.price &&
-            !!params.height &&
-            !!params.width &&
-            !!params.depth &&
+            !!params.dimensions &&
             !!params.weight
         );
 
@@ -49,17 +43,23 @@ export default class Item {
         return this.price;
     }
 
-    public getShipping(distance: number): number {
-        const volume = this.getVolume();
-        const density = this.weight / volume;
-        const price = distance * volume * (density/100);
-        const minimumPrice = MINIMUM_SHIPPING_PRICE;
+    public getVolume(unit: string): number {
+        if (!this.dimensions) {
+            return 0;
+        }
 
-        return price > minimumPrice ? price : minimumPrice;
+        return this.dimensions.getVolume(unit);
     }
 
-    private getVolume(): number {
-        return this.height * this.width * this.depth / 1000000;
+    public getWeight(): number {
+        return this.weight;
+    }
+
+    public getDensity(): number {
+        const volume = this.getVolume('m');
+        const density = this.weight / volume;
+
+        return density;
     }
 }
 
@@ -68,8 +68,6 @@ export type ItemParameters = {
     category: string,
     description: string,
     price: number,
-    height: number,
-    width: number,
-    depth: number,
+    dimensions: Dimension,
     weight: number
 }
