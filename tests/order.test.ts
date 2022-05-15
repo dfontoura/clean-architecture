@@ -1,56 +1,17 @@
 import Coupon from '../src/coupon';
-import Item, { ItemParameters } from '../src/item';
+import Item from '../src/item';
 import Order from '../src/order'
+import { ORDER_ITEM_DATA } from './mock/order-item-data';
+import { ITEM_DATA } from './mock/item-data';
+
+const DISTANCE = 1000;
+const { guitar, cable } = ITEM_DATA;
+const orderItemData = ORDER_ITEM_DATA;
 
 const addItems = (order: Order): void => {
-    const orderItems = getOrderItems();
-    orderItems.forEach(param => {
-        order.addItem(param.item, param.quantity);
+    orderItemData.forEach(orderItem => {
+        order.addItem(orderItem.item, orderItem.quantity);
     });
-}
-
-const getOrderItems = (): any[] => {
-    return [
-        {
-            item: new Item({
-                id: 1,
-                category: 'Musical Instruments',
-                description: 'Guitar',
-                price: 300,
-                height: 10,
-                width: 30,
-                depth: 100,
-                weight: 3
-            }),
-            quantity: 1
-        },
-        {
-            item: new Item({
-                id: 2,
-                category: 'Musical Instruments',
-                description: 'Amplifier',
-                price: 150,
-                height: 50,
-                width: 50,
-                depth: 50,
-                weight: 8
-            }),
-            quantity: 2
-        },
-        {
-            item: new Item({
-                id: 3,
-                category: 'Accessories',
-                description: 'Cable',
-                price: 100,
-                height: 5,
-                width: 20,
-                depth: 20,
-                weight: 0.5
-            }),
-            quantity: 3
-        }
-    ];
 }
 
 describe('Happy paths:', () => {
@@ -62,7 +23,7 @@ describe('Happy paths:', () => {
     test('Order with 3 items: should create the order and return the total price', () => {
         const newOrder = new Order('123.456.789-09');
         addItems(newOrder);
-        expect(newOrder.getTotal()).toBe(900);
+        expect(newOrder.getTotal()).toBe(750);
     });
 
     test('Valid coupon: should return the price with discount', () => {
@@ -70,14 +31,34 @@ describe('Happy paths:', () => {
         addItems(newOrder);
         const coupon = new Coupon('DESC20', 20, new Date('9999-12-31'));
         newOrder.addCoupon(coupon);   
-        expect(newOrder.getTotal()).toBe(720);
+        expect(newOrder.getTotal()).toBe(600);
     });
 
-    test('Shipping: should return the shipping price', () => {
+    test('Expired coupon: should return the price without discount', () => {
         const newOrder = new Order('123.456.789-09');
         addItems(newOrder);
-        expect(newOrder.getShipping(1000)).toBe(220);
+        const coupon = new Coupon('DESC20', 20, new Date('2020-12-31'));
+        newOrder.addCoupon(coupon);   
+        expect(newOrder.getTotal()).toBe(750);
+    });
+
+    test('Freight: should return the freight price', () => {
+        const newOrder = new Order('123.456.789-09');
+        const distance = DISTANCE;
+        addItems(newOrder);
+        expect(newOrder.getFreight(distance)).toBe(257);
     })
+
+    test('Should return the minimum freight price when freight is less than minimum',  () => {
+        const item = new Item(cable);
+        const order = new Order('123.456.789-09');
+        order.addItem(item, 1);
+        const distance = DISTANCE;
+        const total = order.getFreight(distance);
+        const minimumPrice = 10;
+    
+        expect(total).toBe(minimumPrice);
+    });
 });
 
 describe('Exception paths:', () => {
@@ -87,14 +68,7 @@ describe('Exception paths:', () => {
 
     test('Invalid quantity: should throw error "Invalid parameter"', () => {
         const newOrder = new Order('123.456.789-09');
-        const newItem = getOrderItems()[0].item;
+        const newItem = new Item(guitar);
         expect(() => newOrder.addItem(newItem, -10)).toThrowError('Invalid parameter');
-    });
-
-    test('Expired coupon: should throw error "Invalid parameter"', () => {
-        const newOrder = new Order('123.456.789-09');
-        addItems(newOrder);
-        const coupon = new Coupon('DESC20', 20, new Date('2022-03-01'))
-        expect(() => newOrder.addCoupon(coupon)).toThrowError('Invalid parameter');
     });
 });

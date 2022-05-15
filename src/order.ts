@@ -1,5 +1,6 @@
 import Coupon from "./coupon";
 import Cpf from "./cpf";
+import Freight from "./Freight";
 import Item from "./item";
 import OrderItem from "./order-item";
 
@@ -7,9 +8,12 @@ export default class Order {
     private cpf: Cpf;
     private orderItems: OrderItem[] = [];
     private coupon: Coupon | undefined;
+    private freight: Freight;
 
     constructor(cpf: string) {
         this.cpf = new Cpf(cpf);
+        this.orderItems = [];
+        this.freight = new Freight();
     }
 
     public getTotal (): number {
@@ -29,15 +33,13 @@ export default class Order {
     }
 
     public addCoupon(coupon: Coupon) {
-        if (!coupon || !coupon.isValid()) {
-            throw new Error('Invalid parameter');
-        }
         this.coupon = coupon;
     }
 
-    public getShipping(distance: number): number {
-        return this.orderItems.reduce((total, orderItem) => {
-            return total + orderItem.getShipping(distance);
-        }, 0);
+    public getFreight(distance: number): number {
+        const orderItems = this.orderItems;
+        const freight = this.freight.calculate(orderItems, distance);
+
+        return freight;
     }
 }
