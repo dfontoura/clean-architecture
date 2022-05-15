@@ -2,7 +2,7 @@ import Item from "./item";
 
 export default class OrderItem {
     private item: Item;
-    private quantity = 0;
+    private quantity: number = 0;
 
     constructor(item: Item, quantity: number) {
         this.item = item;
@@ -13,7 +13,11 @@ export default class OrderItem {
         return this.quantity * this.item.getPrice();
     }
 
-    public getShipping(distance: number): number {
-        return this.item.getShipping(distance) * this.quantity;
+    public getVolume(unit: string): number {
+        return this.item.getVolume(unit) * this.quantity;
+    }
+
+    public getDensity(): number {
+        return this.item.getDensity();
     }
 }
