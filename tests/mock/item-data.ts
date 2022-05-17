@@ -1,4 +1,4 @@
-import Dimension from "../../src/dimension";
+import Dimension from "../../src/domain/entity/dimension";
 
 export const ITEM_DATA = {
     guitar: {
@@ -20,7 +20,7 @@ export const ITEM_DATA = {
     },
 
     cable: {
-        id: 1,
+        id: 3,
         category: 'Accessories',
         description: 'Cable',
         price: 100,

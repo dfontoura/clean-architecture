@@ -1,4 +1,4 @@
-import Item from '../../src/item';
+import Item from '../../src/domain/entity/item';
 import { ITEM_DATA } from './item-data';
 
 const { guitar, amplifier, cable } = ITEM_DATA;
