@@ -35,6 +35,10 @@ export default class Item {
         return isValid;
     }
 
+    public getId(): number {
+        return this.id;
+    }
+
     public getDescription(): string {
         return this.description;
     }

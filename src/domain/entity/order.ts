@@ -4,6 +4,8 @@ import Freight from "./Freight";
 import Item from "./item";
 import OrderItem from "./order-item";
 
+const DISTANCE = 1000;
+
 export default class Order {
     private cpf: Cpf;
     private orderItems: OrderItem[] = [];
@@ -13,14 +15,15 @@ export default class Order {
     constructor(cpf: string) {
         this.cpf = new Cpf(cpf);
         this.orderItems = [];
-        this.freight = new Freight();
+        this.freight = new Freight(DISTANCE);
     }
 
     public getTotal (): number {
-        const total = this.orderItems.reduce((total, orderItem) => {
-            return total + orderItem.getTotal();
+        const total = this.orderItems.reduce((sum, orderItem) => {
+            return sum + orderItem.getTotal();
         }, 0);
-        const  discount = this.coupon ? this.coupon.getDiscount(total) : 0;
+
+        const discount = this.coupon ? this.coupon.getDiscount(total) : 0;
         return total - discount
     }
 

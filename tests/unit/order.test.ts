@@ -1,8 +1,8 @@
-import Coupon from '../src/coupon';
-import Item from '../src/item';
-import Order from '../src/order'
-import { ORDER_ITEM_DATA } from './mock/order-item-data';
-import { ITEM_DATA } from './mock/item-data';
+import Coupon from '../../src/domain/entity/coupon';
+import Item from '../../src/domain/entity/item';
+import Order from '../../src/domain/entity/order'
+import { ORDER_ITEM_DATA } from '../mock/order-item-data';
+import { ITEM_DATA } from '../mock/item-data';
 
 const DISTANCE = 1000;
 const { guitar, cable } = ITEM_DATA;

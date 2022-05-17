@@ -1,5 +1,5 @@
-import Cpf from '../src/cpf';
-import { CPF_NUMBERS } from './mock/cpf-numbers';
+import Cpf from '../../src/domain/entity/cpf';
+import { CPF_NUMBERS } from '../mock/cpf-numbers';
 
 const { validCpfNumbers, invalidCpfNumbers } = CPF_NUMBERS;
 

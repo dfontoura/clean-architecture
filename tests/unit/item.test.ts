@@ -1,5 +1,5 @@
-import Item from '../src/item';
-import { ITEM_DATA } from './mock/item-data';
+import Item from '../../src/domain/entity/item';
+import { ITEM_DATA } from '../mock/item-data';
 
 const { guitar, cable } = ITEM_DATA;
 

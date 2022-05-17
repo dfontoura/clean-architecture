@@ -12,6 +12,10 @@ export default class Coupon {
         return total * (this.percentage / 100);
     }
 
+    public getName(): string {
+        return this.name;
+    }
+
     public isExpired(today: Date = new Date()): boolean {
         if  (!this.expirationDate) {
             return false;

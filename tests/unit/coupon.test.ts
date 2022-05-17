@@ -1,4 +1,4 @@
-import Coupon from "../src/coupon";
+import Coupon from "../../src/domain/entity/coupon";
 
 describe('Happy path:', () => {
     test('Should create a new coupon', () => {
