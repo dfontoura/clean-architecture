@@ -9,6 +9,7 @@ export default class Coupon {
         if (this.isExpired()) {
             return 0;
         };
+
         return total * (this.percentage / 100);
     }
 
@@ -20,6 +21,7 @@ export default class Coupon {
         if  (!this.expirationDate) {
             return false;
         }
+
         return this.expirationDate.getTime() < today.getTime()
     }
 }

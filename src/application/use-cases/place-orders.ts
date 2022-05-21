@@ -16,8 +16,9 @@ export default class PlaceOrder {
             throw new Error('Invalid input');
         }
 
-        const { cpf, orderItems, couponId } = input;
-        const order = new Order(cpf);
+        const sequence = this.orderRepository.count() + 1;
+        const { cpf, orderItems, couponId, issueDate } = input;
+        const order = new Order(cpf, issueDate, sequence);
 
         orderItems.forEach(orderItem => {
             const item  = this.itemRepository.getById(orderItem.itemId);
@@ -39,6 +40,6 @@ export default class PlaceOrder {
 
         this.orderRepository.save(order);
 
-        return new PlaceOrderOutput(order.getTotal());
+        return new PlaceOrderOutput(order.getCode(), order.getTotal());
     }
 }

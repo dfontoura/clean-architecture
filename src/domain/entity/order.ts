@@ -2,6 +2,7 @@ import Coupon from "./coupon";
 import Cpf from "./cpf";
 import Freight from "./Freight";
 import Item from "./item";
+import OrderCode from "./order-code";
 import OrderItem from "./order-item";
 
 const DISTANCE = 1000;
@@ -11,20 +12,26 @@ export default class Order {
     private orderItems: OrderItem[] = [];
     private coupon: Coupon | undefined;
     private freight: Freight;
+    private code: OrderCode;
 
-    constructor(cpf: string) {
+    constructor(cpf: string, issueDate: Date = new Date(), sequence: number = 1) {
         this.cpf = new Cpf(cpf);
         this.orderItems = [];
         this.freight = new Freight(DISTANCE);
+        this.code = new OrderCode(issueDate, sequence);
     }
 
-    public getTotal (): number {
+    public getTotal(): number {
         const total = this.orderItems.reduce((sum, orderItem) => {
             return sum + orderItem.getTotal();
         }, 0);
 
         const discount = this.coupon ? this.coupon.getDiscount(total) : 0;
         return total - discount
+    }
+
+    public getCode(): string {
+        return this.code.value;
     }
 
     public addItem (item: Item, quantity: number) {

@@ -59,6 +59,12 @@ describe('Happy paths:', () => {
     
         expect(total).toBe(minimumPrice);
     });
+
+    test('Should create an order and return the code', () => {
+        const order = new Order('123.456.789-09', new Date('2021-03-17T22:31:00'), 1);
+        addItems(order);
+        expect(order.getCode()).toBe('202100000001');
+    })
 });
 
 describe('Exception paths:', () => {
