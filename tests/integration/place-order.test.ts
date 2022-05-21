@@ -1,9 +1,9 @@
 import CouponRepositoryMemory from '../../src/infra/repository/memory/coupon-repository-memory';
-import PlaceOrder from '../../src/application/use-cases/place-orders';
+import PlaceOrder from '../../src/application/use-cases/place-order/place-order';
 import { CPF_NUMBERS } from '../mock/cpf-numbers';
 import ItemRepositoryMemory from '../../src/infra/repository/memory/item-repository-memory';
 import OrderRepositoryMemory from '../../src/infra/repository/memory/order-repository-memory';
-import PlaceOrderInput from '../../src/application/use-cases/place-order-input';
+import PlaceOrderInput from '../../src/application/use-cases/place-order/place-order-input';
 
 const { validCpfNumbers } = CPF_NUMBERS;
 
