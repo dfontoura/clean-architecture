@@ -6,9 +6,10 @@ export default class CouponRepositoryMemory implements CouponRepository {
 
     constructor () {
         this.coupons = [
-            new Coupon('VALE20', 20),
-            new Coupon('VALE10', 10),
-            new Coupon('VALE5', 5),
+            new Coupon('COUPON20', 20),
+            new Coupon('COUPON10', 10),
+            new Coupon('COUPON5', 5),
+            new Coupon('EXPIRABLE', 5, new Date('2021-05-01T23:59:59')),
         ];
     }
 
