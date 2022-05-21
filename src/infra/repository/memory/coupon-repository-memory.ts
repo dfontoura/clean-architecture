@@ -12,7 +12,7 @@ export default class CouponRepositoryMemory implements CouponRepository {
         ];
     }
 
-    getByName(name: string): Coupon | undefined {
+    getByCode(name: string): Coupon | undefined {
         return this.coupons.find(coupon => coupon.getName() === name);
     }
 }
