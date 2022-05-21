@@ -47,7 +47,7 @@ describe('Happy paths:', () => {
         const distance = DISTANCE;
         addItems(newOrder);
         expect(newOrder.getFreight(distance)).toBe(257);
-    })
+    });
 
     test('Should return the minimum freight price when freight is less than minimum',  () => {
         const item = new Item(cable);
@@ -64,7 +64,7 @@ describe('Happy paths:', () => {
         const order = new Order('123.456.789-09', new Date('2021-03-17T22:31:00'), 1);
         addItems(order);
         expect(order.getCode()).toBe('202100000001');
-    })
+    });
 });
 
 describe('Exception paths:', () => {

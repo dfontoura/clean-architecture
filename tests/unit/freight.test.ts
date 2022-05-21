@@ -15,7 +15,7 @@ test('Should calculate the freight of an item', () => {
     const total = freight.calculate(orderItems, distance);
 
     expect(total).toBe(257);
-})
+});
 
 test('Should return the minimum freight price when freight is less than minimum',  () => {
     const { cable } = ITEM_DATA;

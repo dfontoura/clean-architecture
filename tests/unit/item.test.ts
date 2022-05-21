@@ -15,5 +15,5 @@ describe('Happy paths:', () => {
         const itemVolume = item.getVolume('m');
         const itemDensity = item.getWeight() / itemVolume;
         expect(itemDensity).toBe(3 / (0.10 * 0.30 * 1.00));
-    })
+    });
 });

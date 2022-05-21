@@ -7,4 +7,4 @@ test('Deve criar o código do pedido', () => {
     const code = orderCode.value;
 
     expect(code).toBe('202200000001');
-})
+});

@@ -14,7 +14,7 @@ describe('Happy paths:', () => {
 describe('Exception paths:', () => {
     test('CPF not informed: should throw error "CPF is required"', () => {
         expect(() => new Cpf('')).toThrowError('CPF is required');
-    })
+    });
 
 
     test.each(invalidCpfNumbers)('Invalid CPF "%s": should throw error "Invalid CPF".', (cpf) => {
