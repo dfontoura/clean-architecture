@@ -1,9 +1,9 @@
-import ItemRepository from "../../domain/repository/item-repository";
-import Order from "../../domain/entity/order";
+import ItemRepository from "../../../domain/repository/item-repository";
+import Order from "../../../domain/entity/order";
 import PlaceOrderInput from "./place-order-input";
 import PlaceOrderOutput from "./place-order-output";
-import CouponRepository from "../../domain/repository/coupon-repository";
-import OrderRepository from "../../domain/repository/order-repository";
+import CouponRepository from "../../../domain/repository/coupon-repository";
+import OrderRepository from "../../../domain/repository/order-repository";
 
 
 export default class PlaceOrder {
@@ -31,7 +31,7 @@ export default class PlaceOrder {
         });
 
         if (couponId) {            
-            const coupon = this.couponRepository.getByName(couponId);
+            const coupon = this.couponRepository.getByCode(couponId);
 
             if (coupon) {
                 order.addCoupon(coupon);
