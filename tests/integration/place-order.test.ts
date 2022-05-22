@@ -23,7 +23,7 @@ const input: PlaceOrderInput = {
             quantity: 3
         },
     ],
-    couponId: 'VALE20',
+    couponId: 'COUPON20',
     issueDate: new Date('2022-03-17T23:29:00'),
 };
 
@@ -34,7 +34,7 @@ test('Should place an order', () => {
     const placeOrder = new PlaceOrder(itemRepository, couponRepository, orderRepository);
     const output = placeOrder.execute(input);
     expect(output.total).toBe(600);
-})
+});
 
 test('Should place an order and return the order code', () => {
     const itemRepository = new ItemRepositoryMemory();
@@ -45,4 +45,4 @@ test('Should place an order and return the order code', () => {
     const secondOutput = placeOrder.execute(input);
     expect(firstOutput.code).toBe('202200000001');
     expect(secondOutput.code).toBe('202200000002');
-})
+});

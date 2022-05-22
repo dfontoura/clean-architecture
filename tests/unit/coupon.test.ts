@@ -14,5 +14,5 @@ describe('Happy path:', () => {
     test('Should create a valid coupon and calculate the discount', () => {
         const coupon = new Coupon('COUPON-10', 10);
         expect(coupon.getDiscount(200)).toBe(20);
-    })
+    });
 });
