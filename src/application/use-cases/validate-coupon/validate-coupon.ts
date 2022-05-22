@@ -4,8 +4,8 @@ export default class ValidateCoupon {
     constructor(readonly couponRepository: CouponRepository) {
     }
     
-    execute(couponCode: string): boolean {
-        const coupon = this.couponRepository.getByCode(couponCode);
+    async execute(couponCode: string): Promise<boolean> {
+        const coupon = await this.couponRepository.getByCode(couponCode);
 
         if (!coupon) {
             return false;
