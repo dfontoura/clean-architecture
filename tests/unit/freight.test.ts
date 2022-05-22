@@ -1,4 +1,4 @@
-import Freight from "../../src/domain/entity/Freight";
+import Freight from "../../src/domain/entity/freight";
 import OrderItem from "../../src/domain/entity/order-item";
 import { ORDER_ITEM_DATA } from "../mock/order-item-data";
 import { ITEM_DATA } from "../mock/item-data";

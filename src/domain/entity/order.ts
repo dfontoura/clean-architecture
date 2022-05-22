@@ -1,6 +1,6 @@
 import Coupon from "./coupon";
 import Cpf from "./cpf";
-import Freight from "./Freight";
+import Freight from "./freight";
 import Item from "./item";
 import OrderCode from "./order-code";
 import OrderItem from "./order-item";
