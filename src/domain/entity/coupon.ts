@@ -1,6 +1,6 @@
 export default class Coupon {
-    constructor(readonly name: string, readonly percentage: number, readonly expirationDate?: Date) {
-        if(!name || !percentage || percentage < 0 || percentage > 100) {
+    constructor(readonly code: string, readonly percentage: number, readonly expirationDate?: Date) {
+        if(!code || !percentage || percentage < 0 || percentage > 100) {
             throw new Error('Invalid parameters');
         }
     }
@@ -13,8 +13,12 @@ export default class Coupon {
         return total * (this.percentage / 100);
     }
 
-    public getName(): string {
-        return this.name;
+    public getPercentage(): number {
+        return this.percentage;
+    }
+
+    public getCode(): string {
+        return this.code;
     }
 
     public isExpired(today: Date = new Date()): boolean {

@@ -13,7 +13,7 @@ export default class ItemRepositoryMemory implements ItemRepository {
         ];
     }
 
-    getById (id: number): Item | undefined {
+    async getById (id: number): Promise<Item | undefined> {
         return this.items.find(item => item.getId() === id);
     }
 }

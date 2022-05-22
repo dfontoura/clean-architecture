@@ -11,27 +11,27 @@ export default class PlaceOrder {
     constructor (readonly itemRepository: ItemRepository, readonly couponRepository: CouponRepository, readonly orderRepository: OrderRepository) {
     }
 
-    execute (input: PlaceOrderInput): PlaceOrderOutput {
+    async execute (input: PlaceOrderInput): Promise<PlaceOrderOutput> {
         if (!input || !input.cpf || !input.orderItems || input.orderItems.length === 0) {
             throw new Error('Invalid input');
         }
 
-        const sequence = this.orderRepository.count() + 1;
+        const sequence = await this.orderRepository.count() + 1;
         const { cpf, orderItems, couponId, issueDate } = input;
         const order = new Order(cpf, issueDate, sequence);
-
-        orderItems.forEach(orderItem => {
-            const item  = this.itemRepository.getById(orderItem.itemId);
+        
+        for (const orderItem of orderItems) {
+            const item  = await this.itemRepository.getById(orderItem.itemId);
 
             if (!item) {
                 throw new Error('Item not found');
             }
 
             order.addItem(item, orderItem.quantity);
-        });
+        }
 
         if (couponId) {            
-            const coupon = this.couponRepository.getByCode(couponId);
+            const coupon = await this.couponRepository.getByCode(couponId);
 
             if (coupon) {
                 order.addCoupon(coupon);

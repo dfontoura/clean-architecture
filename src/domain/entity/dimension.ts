@@ -1,22 +1,22 @@
 export default class Dimension {
     private width: number;
     private height: number;
-    private depth: number;
+    private length: number;
     private unit: string;
 
     constructor(width: number, height: number, depth: number, unit: string) {
         this.width = width;
         this.height = height;
-        this.depth = depth;
+        this.length = depth;
         this.unit = unit;
     }
 
     public getVolume(unit: string): number {
         const width = this.convertTo(this.width, this.unit, unit);
         const height = this.convertTo(this.height, this.unit, unit);
-        const depth = this.convertTo(this.depth, this.unit, unit);
+        const length = this.convertTo(this.length, this.unit, unit);
 
-        return width * height * depth;
+        return width * height * length;
     }
 
     private convertTo(value: number, from: string, to: string): number {
