@@ -23,7 +23,7 @@ describe('Happy paths:', () => {
     test('Order with 3 items: should create the order and return the total price', () => {
         const newOrder = new Order('123.456.789-09');
         addItems(newOrder);
-        expect(newOrder.getTotal()).toBe(750);
+        expect(newOrder.getTotal()).toBe(6090);
     });
 
     test('Valid coupon: should return the price with discount', () => {
@@ -31,7 +31,7 @@ describe('Happy paths:', () => {
         addItems(newOrder);
         const coupon = new Coupon('DESC20', 20, new Date('9999-12-31'));
         newOrder.addCoupon(coupon);   
-        expect(newOrder.getTotal()).toBe(600);
+        expect(newOrder.getTotal()).toBe(4872);
     });
 
     test('Expired coupon: should return the price without discount', () => {
@@ -39,7 +39,7 @@ describe('Happy paths:', () => {
         addItems(newOrder);
         const coupon = new Coupon('DESC20', 20, new Date('2020-12-31'));
         newOrder.addCoupon(coupon);   
-        expect(newOrder.getTotal()).toBe(750);
+        expect(newOrder.getTotal()).toBe(6090);
     });
 
     test('Freight: should return the freight price', () => {

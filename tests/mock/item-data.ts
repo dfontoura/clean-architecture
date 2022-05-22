@@ -5,7 +5,7 @@ export const ITEM_DATA = {
         id: 1,
         category: 'Musical Instruments',
         description: 'Guitar',
-        price: 300,
+        price: 1000,
         dimensions: new Dimension(10, 30, 100, 'cm'),
         weight: 3
     },
@@ -14,7 +14,7 @@ export const ITEM_DATA = {
         id: 2,
         category: 'Musical Instruments',
         description: 'Amplifier',
-        price: 150,
+        price: 5000,
         dimensions: new Dimension(100, 50, 50, 'cm'),
         weight: 20
     },
@@ -23,7 +23,7 @@ export const ITEM_DATA = {
         id: 3,
         category: 'Accessories',
         description: 'Cable',
-        price: 100,
+        price: 30,
         dimensions: new Dimension(10, 10, 10, 'cm'),
         weight: 0.9
     }
