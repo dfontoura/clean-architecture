@@ -1,14 +1,11 @@
 import PlaceOrder from '../../src/application/use-cases/place-order/place-order';
 import { CPF_NUMBERS } from '../mock/cpf-numbers';
-import OrderRepositoryMemory from '../../src/infra/repository/memory/order-repository-memory';
 import PlaceOrderInput from '../../src/application/use-cases/place-order/place-order-input';
-import ItemRepository from '../../src/domain/repository/item-repository';
-import OrderRepository from '../../src/domain/repository/order-repository';
-import CouponRepository from '../../src/domain/repository/coupon-repository';
 import Connection from '../../src/infra/database/connection';
 import PostgresqlConnectionAdapter from '../../src/infra/database/postgresql-connection-adapter';
-import ItemRepositoryDatabase from '../../src/infra/repository/database/item-repository-database';
-import CouponRepositoryDatabase from '../../src/infra/repository/database/coupon-repository-database';
+import RepositoryFactory from '../../src/domain/factory/repository-factory';
+import DatabaseRepositoryFactory from '../../src/infra/factory/database-repository-factory';
+import MemoryRepositoryFactory from '../../src/infra/factory/memory-repository-factory';
 
 const { validCpfNumbers } = CPF_NUMBERS;
 
@@ -33,25 +30,21 @@ const input: PlaceOrderInput = {
 };
 
 let connection: Connection;
-let itemRepository: ItemRepository;
-let orderRepository: OrderRepository;
-let couponRepository: CouponRepository;
+let repositoryFactory: RepositoryFactory;
 
 beforeEach(() => {
     connection = new PostgresqlConnectionAdapter();
-    itemRepository = new ItemRepositoryDatabase(connection);
-    orderRepository = new OrderRepositoryMemory();
-    couponRepository = new CouponRepositoryDatabase(connection);
+    repositoryFactory = new DatabaseRepositoryFactory(connection);
 });
 
 test('Should place an order', async () => {
-    const placeOrder = new PlaceOrder(itemRepository, couponRepository, orderRepository);
+    const placeOrder = new PlaceOrder(repositoryFactory);
     const output = await placeOrder.execute(input);
-    expect(output.total).toBe(4872);
+    expect(output.total).toBe(5152);
 });
 
 test('Should place an order and return the order code', async () => {
-    const placeOrder = new PlaceOrder(itemRepository, couponRepository, orderRepository);
+    const placeOrder = new PlaceOrder(repositoryFactory);
     const firstOutput = await placeOrder.execute(input);
     const secondOutput = await placeOrder.execute(input);
     expect(firstOutput.code).toBe('202200000001');
