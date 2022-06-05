@@ -23,8 +23,8 @@ const itemData = {
         id: 1,
         category: 'Musical Instruments',
         description: 'Guitar',
-        price: 300,
-        dimensions: new Dimension(10, 30, 100, 'cm'),
+        price: 1000,
+        dimensions: new Dimension(100, 50, 15, 'cm'),
         weight: 3
     },
 
@@ -32,17 +32,17 @@ const itemData = {
         id: 2,
         category: 'Musical Instruments',
         description: 'Amplifier',
-        price: 150,
-        dimensions: new Dimension(100, 50, 50, 'cm'),
-        weight: 20
+        price: 5000,
+        dimensions: new Dimension(50, 50, 50, 'cm'),
+        weight: 22
     },
 
     cable: {
         id: 3,
         category: 'Accessories',
         description: 'Cable',
-        price: 100,
+        price: 30,
         dimensions: new Dimension(10, 10, 10, 'cm'),
-        weight: 0.9
+        weight: 1
     }
 };
