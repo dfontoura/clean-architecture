@@ -20,4 +20,16 @@ export default class OrderItem {
     public getDensity(): number {
         return this.item.getDensity();
     }
+
+    public getItemId(): number {
+        return this.item.getId();
+    }
+
+    public getItemPrice(): number {
+        return this.item.getPrice();
+    }
+
+    public getQuantity(): number {
+        return this.quantity;
+    }
 }

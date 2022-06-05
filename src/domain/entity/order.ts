@@ -13,12 +13,16 @@ export default class Order {
     private coupon: Coupon | undefined;
     private freight: Freight;
     private code: OrderCode;
+    private issueDate: Date;
+    private sequence: number;
 
     constructor(cpf: string, issueDate: Date = new Date(), sequence: number = 1) {
         this.cpf = new Cpf(cpf);
         this.orderItems = [];
         this.freight = new Freight(DISTANCE);
         this.code = new OrderCode(issueDate, sequence);
+        this.issueDate = issueDate;
+        this.sequence = sequence;
     }
 
     public getTotal(): number {
@@ -27,11 +31,32 @@ export default class Order {
         }, 0);
 
         const discount = this.coupon ? this.coupon.getDiscount(total) : 0;
-        return total - discount
+        const freight = this.getFreight(DISTANCE);
+        return total - discount + freight;
     }
 
     public getCode(): string {
         return this.code.value;
+    }
+
+    public getCpf(): string {
+        return this.cpf.getValue();
+    }
+
+    public getCoupon(): string | undefined {
+        return this.coupon?.getCode();
+    }
+
+    public getIssueDate(): Date {
+        return this.issueDate;
+    }
+
+    public getSequence(): number {
+        return this.sequence;
+    }
+
+    public getOrderItems(): OrderItem[] {
+        return this.orderItems;
     }
 
     public addItem (item: Item, quantity: number) {

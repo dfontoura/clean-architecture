@@ -25,6 +25,6 @@ export const ITEM_DATA = {
         description: 'Cable',
         price: 30,
         dimensions: new Dimension(10, 10, 10, 'cm'),
-        weight: 0.9
+        weight: 1
     }
 };

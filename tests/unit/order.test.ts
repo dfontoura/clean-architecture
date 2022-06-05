@@ -23,30 +23,30 @@ describe('Happy paths:', () => {
     test('Order with 3 items: should create the order and return the total price', () => {
         const newOrder = new Order('123.456.789-09');
         addItems(newOrder);
-        expect(newOrder.getTotal()).toBe(6090);
+        expect(newOrder.getTotal()).toBe(6350);
     });
 
     test('Valid coupon: should return the price with discount', () => {
         const newOrder = new Order('123.456.789-09');
         addItems(newOrder);
-        const coupon = new Coupon('DESC20', 20, new Date('9999-12-31'));
+        const coupon = new Coupon('VALE20', 20, new Date('9999-12-31'));
         newOrder.addCoupon(coupon);   
-        expect(newOrder.getTotal()).toBe(4872);
+        expect(newOrder.getTotal()).toBe(5132);
     });
 
     test('Expired coupon: should return the price without discount', () => {
         const newOrder = new Order('123.456.789-09');
         addItems(newOrder);
-        const coupon = new Coupon('DESC20', 20, new Date('2020-12-31'));
+        const coupon = new Coupon('VALE20', 20, new Date('2020-12-31'));
         newOrder.addCoupon(coupon);   
-        expect(newOrder.getTotal()).toBe(6090);
+        expect(newOrder.getTotal()).toBe(6350);
     });
 
     test('Freight: should return the freight price', () => {
         const newOrder = new Order('123.456.789-09');
         const distance = DISTANCE;
         addItems(newOrder);
-        expect(newOrder.getFreight(distance)).toBe(257);
+        expect(newOrder.getFreight(distance)).toBe(260);
     });
 
     test('Should return the minimum freight price when freight is less than minimum',  () => {

@@ -47,7 +47,7 @@ exports.coupons = [
     {
         id: 1,
         name: 'Desconto de 10%',
-        code: 'DESCONTO10',
+        code: 'VALE10',
         value: 0.10,
         min_value: 100.00,
         expires_in: '2022-12-31'
@@ -55,7 +55,7 @@ exports.coupons = [
     {
         id: 2,
         name: 'Desconto de 20%',
-        code: 'DESCONTO20',
+        code: 'VALE20',
         value: 0.20,
         min_value: 200.00,
         expires_in: '2022-12-31'
@@ -63,7 +63,7 @@ exports.coupons = [
     {
         id: 3,
         name: 'Desconto de 30%',
-        code: 'DESCONTO30',
+        code: 'VALE30',
         value: 0.30,
         min_value: 300.00,
         expires_in: '2022-12-31'
