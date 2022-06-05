@@ -1,10 +1,14 @@
 import Freight from "../../../domain/entity/freight";
+import RepositoryFactory from "../../../domain/factory/repository-factory";
 import ItemRepository from "../../../domain/repository/item-repository";
 import SimulateFreightInput from "./simulate-freight-input";
 import SimulateFreightOutput from "./simulate-freight-output";
 
 export default class SimulateFreight {
-    constructor(readonly itemRepository: ItemRepository) {
+    private itemRepository: ItemRepository;
+
+    constructor(readonly repositoryFactory: RepositoryFactory) {
+        this.itemRepository = repositoryFactory.createItemRepository();
     }
 
     async execute(input: SimulateFreightInput): Promise<SimulateFreightOutput> {
