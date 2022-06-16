@@ -5,7 +5,6 @@ import Connection from '../../src/infra/database/connection';
 import PostgresqlConnectionAdapter from '../../src/infra/database/postgresql-connection-adapter';
 import RepositoryFactory from '../../src/domain/factory/repository-factory';
 import DatabaseRepositoryFactory from '../../src/infra/factory/database-repository-factory';
-import MemoryRepositoryFactory from '../../src/infra/factory/memory-repository-factory';
 
 const { validCpfNumbers } = CPF_NUMBERS;
 
@@ -32,9 +31,11 @@ const input: PlaceOrderInput = {
 let connection: Connection;
 let repositoryFactory: RepositoryFactory;
 
-beforeEach(() => {
+beforeEach(async () => {
     connection = new PostgresqlConnectionAdapter();
     repositoryFactory = new DatabaseRepositoryFactory(connection);
+    const orderRepository = repositoryFactory.createOrderRepository();
+    await orderRepository.clean();
 });
 
 test('Should place an order', async () => {

@@ -49,11 +49,11 @@ export default class OrderRepositoryDatabase implements OrderRepository {
             throw new Error(`Coupon with code ${code} not found`);
         }
 
-        const coupon = this.parseToCoupon(couponData);
+        const coupon = this.parseCoupon(couponData);
         return coupon;
     }
 
-    private parseToCoupon(couponData: any): Coupon {
+    private parseCoupon(couponData: any): Coupon {
         const { code, percentage, expire_date } = couponData;
         const discount = parseFloat(percentage);
         const expirationDate = expire_date ? new Date(expire_date) : undefined;
