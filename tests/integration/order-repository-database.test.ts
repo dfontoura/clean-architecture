@@ -26,7 +26,7 @@ beforeEach(() => {
     newOrder.addCoupon(coupon);   
 });
 
-test('Should get an order from database', async () => {
+test('Should save an order', async () => {
     await orderRepository.clean();
     await orderRepository.save(newOrder);
     const count = await orderRepository.count();
