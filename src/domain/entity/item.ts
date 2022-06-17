@@ -29,7 +29,8 @@ export default class Item {
             !!params.description && 
             !!params.price &&
             !!params.dimensions &&
-            !!params.weight
+            !!params.weight &&
+            params.weight >= 0
         );
 
         return isValid;

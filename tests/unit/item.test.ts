@@ -17,3 +17,12 @@ describe('Happy paths:', () => {
         expect(itemDensity).toBe(3 / (0.15 * 0.50 * 1.00));
     });
 });
+
+describe('Exception paths:', () => {
+    test('Should throw an error when weight is negative', () => {
+        const itemData = guitar;
+        itemData.weight *= -1;
+        expect(() => new Item(itemData)).toThrowError('Invalid parameter');
+        itemData.weight *= -1;
+    });
+});
