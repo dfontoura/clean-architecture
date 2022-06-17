@@ -63,6 +63,15 @@ export default class Order {
         if (!item || !quantity || quantity < 1) {
             throw Error('Invalid parameter');
         }
+
+        const [itemAlreadyAddedBefore] = this.orderItems.filter(orderItem => orderItem.getItemId() === item.getId());
+
+        if (itemAlreadyAddedBefore) {
+            const currentQuantity = itemAlreadyAddedBefore.getQuantity();
+            itemAlreadyAddedBefore.setQuantity(currentQuantity + quantity);
+            return;
+        }
+
         const newOrderItem = new OrderItem(item, quantity);
         this.orderItems.push(newOrderItem);
     }

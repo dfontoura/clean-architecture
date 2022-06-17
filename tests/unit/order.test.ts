@@ -65,6 +65,17 @@ describe('Happy paths:', () => {
         addItems(order);
         expect(order.getCode()).toBe('202100000001');
     });
+
+    test('Should just increase quantity if add an item already added before', () => {
+        const newOrder = new Order('123.456.789-09');
+        const newItem = new Item(guitar);
+        newOrder.addItem(newItem, 1);
+        let itemQuantity = newOrder.getOrderItems()[0].getQuantity();
+        expect(itemQuantity).toBe(1);
+        newOrder.addItem(newItem, 2);
+        itemQuantity = newOrder.getOrderItems()[0].getQuantity();
+        expect(itemQuantity).toBe(3);
+    });
 });
 
 describe('Exception paths:', () => {
@@ -72,7 +83,7 @@ describe('Exception paths:', () => {
         expect(() => new Order('123.123.123-12')).toThrowError('Invalid CPF');
     });
 
-    test('Invalid quantity: should throw error "Invalid parameter"', () => {
+    test('Invalid quantity: should throw error "Invalid parameter" if quantity is negative', () => {
         const newOrder = new Order('123.456.789-09');
         const newItem = new Item(guitar);
         expect(() => newOrder.addItem(newItem, -10)).toThrowError('Invalid parameter');
