@@ -5,6 +5,10 @@ export default class Dimension {
     private unit: string;
 
     constructor(width: number, height: number, depth: number, unit: string) {
+        if (width < 0 || height < 0 || depth < 0) {
+            throw Error('Invalid parameter');
+        }
+
         this.width = width;
         this.height = height;
         this.length = depth;
