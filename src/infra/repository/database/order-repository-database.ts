@@ -11,6 +11,27 @@ export default class OrderRepositoryDatabase implements OrderRepository {
     constructor(readonly connection: Connection) {
     }
 
+    async getAll(): Promise<Order[]> {
+        const orders: Order[] = [];
+        const ordersData: any = await this.getOrderList();
+
+        for (const orderData of ordersData) {
+            const coupon: Coupon|undefined = await this.getCouponByCode(orderData.coupon_code);
+            const orderItemData: any = await this.getOrderItemDataByOrder(orderData.id_order);
+    
+            const items: Item[] = [];
+            for (const orderItem of orderItemData) {
+                const item = await this.getItemById(orderItem.id_item, orderItem.price);
+                items.push(item);
+            }
+
+            const order = this.parseOrder(orderData, coupon, orderItemData, items);
+            orders.push(order);
+        }
+
+        return orders;
+    }
+
     async getByCode(code: string): Promise<Order> {
         const orderData: any = await this.getOrderDataByCode(code);
         const coupon: Coupon|undefined = await this.getCouponByCode(orderData.coupon_code);
@@ -18,12 +39,19 @@ export default class OrderRepositoryDatabase implements OrderRepository {
 
         const items: Item[] = [];
         for (const orderItem of orderItemData) {
-            const item = await this.getItemById(orderItem.id_item);
+            const item = await this.getItemById(orderItem.id_item, orderItem.price);
             items.push(item);
         }
 
         const order = this.parseOrder(orderData, coupon, orderItemData, items);
         return order;
+    }
+
+    private async getOrderList(): Promise<any> {
+        const sql = `SELECT * FROM ecommerce.order`;
+        const ordersData = await this.connection.query(sql);
+
+        return ordersData;
     }
 
     private async getOrderDataByCode(code: string): Promise<any> {
@@ -73,19 +101,19 @@ export default class OrderRepositoryDatabase implements OrderRepository {
         return orderItemData;
     }
 
-    private async getItemById(id: number): Promise<any> {
+    private async getItemById(id: number, price: string): Promise<any> {
         const sql = `SELECT * FROM ecommerce.item WHERE id_item = $1`;
         const [itemData] = await this.connection.query(sql, [id]);
 
-        if (!itemData) {
+        if (!itemData || !price) {
             throw new Error(`OrderItems for the item with id ${id} not found`);
         }
 
-        const item = this.parseItem(itemData);
+        const item = this.parseItem(itemData, price);
         return item;
     }
 
-    private parseItem(itemData: any): Item {
+    private parseItem(itemData: any, orderPrice: string): Item {
 
         const { id_item, category, description, price, width, height, length, weight } = itemData;
         const dimensions = new Dimension(width, height, length, 'cm');
@@ -94,7 +122,7 @@ export default class OrderRepositoryDatabase implements OrderRepository {
             id: id_item, 
             category, 
             description, 
-            price: parseFloat(price), 
+            price: parseFloat(orderPrice), 
             weight, 
             dimensions 
         };

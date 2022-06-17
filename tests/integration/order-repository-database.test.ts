@@ -17,22 +17,33 @@ const addItems = (order: Order): void => {
     });
 }
 
-beforeEach(() => {
+beforeEach(async () => {
     connection = new PostgresqlConnectionAdapter();
     orderRepository = new OrderRepositoryDatabase(connection);
     newOrder = new Order('123.456.789-09');
     addItems(newOrder);
     const coupon = new Coupon('VALE20', 20, new Date('9999-12-31'));
-    newOrder.addCoupon(coupon);   
+    newOrder.addCoupon(coupon);
+    await orderRepository.clean();
 });
 
 test('Should save an order', async () => {
-    await orderRepository.clean();
     await orderRepository.save(newOrder);
     const count = await orderRepository.count();
     expect(count).toBe(1);
     const savedOrder = await orderRepository.getByCode('202200000001');
     expect(savedOrder.getTotal()).toBe(5152);
+});
+
+test('Should list the orders', async () => {
+    await orderRepository.save(newOrder);
+    await orderRepository.save(newOrder);
+    await orderRepository.save(newOrder);
+    const count = await orderRepository.count();
+    expect(count).toBe(3);
+    const savedOrders = await orderRepository.getAll();
+    expect(savedOrders).toHaveLength(3);
+    expect(savedOrders[2].getTotal()).toBe(5152);
 });
 
 afterEach(async () => {
