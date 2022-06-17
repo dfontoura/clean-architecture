@@ -4,7 +4,6 @@ import RepositoryFactory from "../../src/domain/factory/repository-factory";
 import Connection from "../../src/infra/database/connection";
 import PostgresqlConnectionAdapter from "../../src/infra/database/postgresql-connection-adapter";
 import DatabaseRepositoryFactory from "../../src/infra/factory/database-repository-factory";
-import MemoryRepositoryFactory from "../../src/infra/factory/memory-repository-factory";
 
 const input: SimulateFreightInput = {
     orderItems: [ 
