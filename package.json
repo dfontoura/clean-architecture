@@ -7,8 +7,8 @@
     "dev": "node ./src/cpf.js",
     "start": "node ./src/main.js",
     "build": "tsc",
-    "test": "tsc && jest ./dist --verbose",
-    "coverage": "jest --coverage"
+    "test": "tsc && jest ./dist --verbose --runInBand",
+    "coverage": "test -- --coverage --runInBand"
   },
   "repository": {
     "type": "git",
