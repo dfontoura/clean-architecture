@@ -5,6 +5,8 @@ import PlaceOrderOutput from "./place-order-output";
 import CouponRepository from "../../../domain/repository/coupon-repository";
 import OrderRepository from "../../../domain/repository/order-repository";
 import RepositoryFactory from "../../../domain/factory/repository-factory";
+import OrderPlaced from "../../../domain/event/order-placed";
+import Mediator from "../../../infra/mediator/mediator";
 
 
 export default class PlaceOrder {
@@ -12,7 +14,7 @@ export default class PlaceOrder {
     private couponRepository: CouponRepository;
     private orderRepository: OrderRepository;
 
-    constructor (readonly repositoryFactory: RepositoryFactory) {
+    constructor (readonly repositoryFactory: RepositoryFactory, readonly mediator: Mediator = new Mediator) {
         this.itemRepository = repositoryFactory.createItemRepository();
         this.couponRepository = repositoryFactory.createCouponRepository();
         this.orderRepository = repositoryFactory.createOrderRepository();
@@ -26,7 +28,7 @@ export default class PlaceOrder {
         const sequence = await this.orderRepository.count() + 1;
         const { cpf, orderItems, couponId, issueDate } = input;
         const order = new Order(cpf, issueDate, sequence);
-        
+
         for (const orderItem of orderItems) {
             const item  = await this.itemRepository.getById(orderItem.itemId);
 
@@ -37,7 +39,7 @@ export default class PlaceOrder {
             order.addItem(item, orderItem.quantity);
         }
 
-        if (couponId) {            
+        if (couponId) {
             const coupon = await this.couponRepository.getByCode(couponId);
 
             if (coupon) {
@@ -46,6 +48,8 @@ export default class PlaceOrder {
         }
 
         this.orderRepository.save(order);
+        const event = new OrderPlaced(order);
+        this.mediator.publish(event);
 
         return new PlaceOrderOutput(order.getCode(), order.getTotal());
     }

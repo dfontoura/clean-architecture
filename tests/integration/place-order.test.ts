@@ -5,6 +5,9 @@ import Connection from '../../src/infra/database/connection';
 import PostgresqlConnectionAdapter from '../../src/infra/database/postgresql-connection-adapter';
 import RepositoryFactory from '../../src/domain/factory/repository-factory';
 import DatabaseRepositoryFactory from '../../src/infra/factory/database-repository-factory';
+import GetStock from '../../src/application/use-cases/get-stock/get-stock';
+import Mediator from '../../src/infra/mediator/mediator';
+import StockEntryHandler from '../../src/application/handler/stock-entry-handler';
 
 const { validCpfNumbers } = CPF_NUMBERS;
 
@@ -50,6 +53,20 @@ test('Should place an order and return the order code', async () => {
     const secondOutput = await placeOrder.execute(input);
     expect(firstOutput.code).toBe('202200000001');
     expect(secondOutput.code).toBe('202200000002');
+});
+
+test('Should remove items from stock after placing an order', async () => {
+    const mediator = new Mediator();
+    mediator.register(new StockEntryHandler(repositoryFactory));
+    const placeOrder = new PlaceOrder(repositoryFactory, mediator);
+    await placeOrder.execute(input);
+    const getStock = new GetStock(repositoryFactory);
+    const total1 = await getStock.execute(1);
+    expect(total1).toBe(-1);
+    const total2 = await getStock.execute(2);
+    expect(total2).toBe(-1);
+    const total3 = await getStock.execute(3);
+    expect(total3).toBe(-3);
 });
 
 afterEach(async () => {
