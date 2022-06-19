@@ -179,6 +179,7 @@ export default class OrderRepositoryDatabase implements OrderRepository {
     async clean(): Promise<void> {
         await this.connection.query(`DELETE FROM ecommerce.order`);
         await this.connection.query(`DELETE FROM ecommerce.order_item`);
+        await this.connection.query(`DELETE FROM ecommerce.stock_entry`);
     }
 
     private getSaveOrderQuery(): string {
