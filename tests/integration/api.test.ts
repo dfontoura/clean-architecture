@@ -39,7 +39,7 @@ beforeEach(async () => {
     await orderRepository.clean();
 });
 
-test('Should test the API', async () => {
+test('Should test the API /orders', async () => {
     const placeOrder = new PlaceOrder(repositoryFactory);
     await placeOrder.execute(input);
     await placeOrder.execute(input);
@@ -52,6 +52,16 @@ test('Should test the API', async () => {
 
     const orders = response.data;
     expect(orders).toHaveLength(3);
+})
+
+test('Should test the API /items', async () => {
+    const response = await axios({
+        url: 'http://localhost:3002/items',
+        method: 'get',
+    });
+
+    const items = response.data;
+    expect(items).toHaveLength(3);
 })
 
 afterEach(async () => {
