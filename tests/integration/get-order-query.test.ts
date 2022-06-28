@@ -1,4 +1,4 @@
-import GetOrderQuery from "../../src/application/query/get-order-query";
+import GetOrderQuery from "../../src/application/query/get-order/get-order-query";
 import PlaceOrder from "../../src/application/use-cases/place-order/place-order";
 import PlaceOrderInput from "../../src/application/use-cases/place-order/place-order-input";
 import RepositoryFactory from "../../src/domain/factory/repository-factory";

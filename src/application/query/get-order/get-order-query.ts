@@ -1,6 +1,6 @@
-import Connection from "../../infra/database/connection";
-import OrderDAO from "../dao/order-dao";
-import GetOrderOutput from "../use-cases/get-order/get-order-output";
+import Connection from "../../../infra/database/connection";
+import OrderDAO from "../../dao/order-dao";
+import GetOrderOutput from "../../use-cases/get-order/get-order-output";
 
 export default class GetOrderQuery {
 
